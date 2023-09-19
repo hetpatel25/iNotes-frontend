@@ -1,9 +1,12 @@
 const connectToMongo = require('./db');
 const express = require('express')
+var cors = require('cors')
 
 connectToMongo();
 const app = express()
 const port = 5000
+  
+app.use(cors())
 
 //If we want to use req.body then....
 app.use(express.json());
@@ -21,5 +24,5 @@ app.get('/login', (req, res) => {
   })
   
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`iNotebook backend listening on port ${port}`)
 })

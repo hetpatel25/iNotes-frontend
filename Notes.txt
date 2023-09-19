@@ -1,0 +1,19 @@
+Username-Password 
+   - Security => passwords are not stored as it is in databse
+   - Attackers have hash-password mapping table(~3billion common passwords)
+   - What is rainbow table
+   - Salt & Pepper ?
+   - https://youtu.be/inEhzp3nD0M?si=V2yc0boD_Y7m_giD
+   - Nodejs=> npm i bcryptjs
+
+
+JWT 
+   - Provide secure connection b/w client and server
+
+npm i react-router-dom concurrently
+   - we can run both client and server using one combine command
+
+-Contex API/Redux
+   - When we have large number of nested components then it is difficult to pass state at the last components
+   - For handle this issue we use context API
+   - UseContext() => hook
