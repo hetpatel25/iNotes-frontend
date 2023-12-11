@@ -2,12 +2,12 @@ import AddNote from './AddNote'
 import Notes from './Notes'
 
 /*This is the Home Page and It has nested components*/
-const Home = () => {
-
+const Home = (props) => {
+ const {showAlert} = props;
  return (
     <div>
       <h2>Create Note</h2>
-      <Notes />
+      <Notes showAlert = {showAlert}/>
     </div>
   )
 }

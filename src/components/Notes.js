@@ -2,15 +2,20 @@ import React, { useContext, useEffect, useState, useRef} from 'react'
 import NoteContext from "../context/notes/noteContext"
 import Noteitem from './Noteitem';
 import AddNote from './AddNote';
-
+import { useNavigate} from 'react-router-dom';
 
 const Notes = () => {
-
+    
+    let navigate = useNavigate();
     const context = useContext(NoteContext);
     const { notes, getNotes, editNote } = context;
 
     useEffect(() => {
-        getNotes();
+
+        if(localStorage.getItem('token'))
+            getNotes();
+        else
+            navigate('/login');
     }, []);
     
     /*useRef is used for virtully/indirectly click the button*/

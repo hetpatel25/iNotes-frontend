@@ -15,12 +15,12 @@ router.post('/createuser', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'password length atleast 5').isLength({ min: 5 })
 ], async (req, res) => {
-
+    let success = false;
     const errors = validationResult(req);
 
     /*If there are errors then return bad request and errors*/
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ success, errors: errors.array() });
     }
 
     // console.log(req.body);
@@ -32,7 +32,7 @@ router.post('/createuser', [
         /*check whther user with this email already exists */
         let user = await User.findOne({ email: req.body.email });
         if (user)
-            return res.status(400).json({ "error": "this email already exists" });
+            return res.status(400).json({success, "error": "this email already exists" });
 
         /*Password-Hashing*/
         const salt = await bcrypt.genSalt(10);/*[Why await?] when promis has been resolved,then only go to the next line*/
@@ -56,7 +56,8 @@ router.post('/createuser', [
         }
         const authtoken = jwt.sign(data, JWT_SECRET);
         console.log(authtoken);
-        return res.json({ authtoken });
+        success = true;
+        return res.json({success, authtoken });
 
     } /*if something goes wrong in try block, display error*/
     catch (error) {
@@ -71,7 +72,8 @@ router.post('/login', [
     body('email', 'Enter a valid email').isEmail(),
     body('password', 'Password can not be empty').exists()
 ], async (req, res) => {
-
+    
+    let success = false;
     const errors = validationResult(req);
 
     /*If there are errors then return bad request and errors*/
@@ -85,13 +87,13 @@ router.post('/login', [
         const { email, password } = req.body;
         let user = await User.findOne({ email });
         if (!user)
-            return res.status(400).json({ "error": "user with this email does't exists" });
+            return res.status(400).json({success, "error": "user with this email does't exists" });
 
         /*Password-compare*/
         const passwordCompare = await bcrypt.compare(password, user.password);
 
         if (!passwordCompare)
-            return res.status(400).json({ error: "Please enter the valid password" });
+            return res.status(400).json({success, error: "Please enter the valid password" });
 
 
         const data = {
@@ -102,7 +104,8 @@ router.post('/login', [
 
         const authtoken = jwt.sign(data, JWT_SECRET);
         console.log(authtoken);
-        return res.json({ authtoken });
+        success = true;
+        return res.json({ success,authtoken });
 
     } /*if something goes wrong in try block, display error*/
     catch (error) {
